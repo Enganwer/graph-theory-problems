@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+int deg [200005];
+vector < int > adj [200005];
+int vis[200005];
+void dfs (int u){
+vis[u]=1;
+vector < int > vc ;
+for (int i : adj[u]){
+    if (!vis[i]) cout << u << " " << i << endl,vc.push_back(i),vis[i]=1;
+}
+for (int i : vc){
+    dfs(i);
+}
+}
+int main()
+{
+ios_base::sync_with_stdio(0);
+    cin.tie(0);
+     int n , m ;
+     cin >> n>> m ;
+     for (int i = 0 ; i < m;i++){
+        int u , v ;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+        deg[u]++;
+        deg[v]++;
+     }
+     int res = 0 ;
+     int num = 1 ;
+     for (int i = 1 ; i <= n ;i++){
+        if (res < deg[i]) res = deg[i],num = i ;
+     }
+    dfs(num);
+}

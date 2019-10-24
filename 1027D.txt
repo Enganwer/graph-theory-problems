@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+ 
+using namespace std;
+ 
+int cost[200005],vis[200005],to[200005];
+int id;
+vector < int > adj[200005];
+set <int> cyc;
+void dfs (int u){
+vis[u]=id;
+for (int i :adj[u]){
+    if (!vis[i])dfs(i);
+    else if (vis[to[i]]==id)
+    {cyc.insert(to[i]); return;}
+}
+ 
+}
+long long calc (int u , int v){
+ long long  mn = cost[u];
+ if (v == to[u])
+    return  mn ;
+ return min(mn , calc(to[u],v));
+}
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int n ;
+    cin >> n;
+    for (int i = 0 ; i < n ;i++){
+        int tk ;
+        cin >> tk;
+        cost[i]=tk;
+    }
+    for (int i = 0 ; i < n ;i++){
+        int tk;
+        cin >> tk;
+        to[i]=tk-1;
+        adj[i].push_back(tk-1);
+    }
+    for (int i = 0 ; i < n ;i++){
+        if (!vis[i]){
+                id++;
+            dfs(i);
+        }
+    }
+    long long ans = 0;
+    for (int i : cyc){
+        ans += calc(i,i);
+    }
+    cout << ans;
+ 
+ 
+}
+ 
+ 

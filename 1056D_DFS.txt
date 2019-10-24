@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+ 
+ 
+using namespace std;
+vector < int > adj[100005];
+int res[100005];
+void dfs (int u = 1 , int p = 0){
+if (adj[u].size()==1 && p) res[u]=1;
+for (int i : adj[u]){
+    if (i == p ) continue;
+       dfs(i,u);
+       res[u] += res[i];
+}
+ 
+}
+int main()
+{
+   ios_base::sync_with_stdio(0); cin.tie(0);
+   int n ;
+   cin >> n ;
+   if (n==1)exit(puts("1"));
+   for (int i = 2 ; i <= n ;i++){
+    int x ;
+    cin >> x ;
+    adj[i].push_back(x);
+    adj[x].push_back(i);
+   }
+   dfs();
+   sort(res,res+n+1);
+   for (int i = 1 ; i <= n ;i++)
+    cout << res[i] << " ";
+ 
+}

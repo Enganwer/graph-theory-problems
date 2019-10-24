@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+ 
+using namespace std;
+vector < int > adj[10000];
+vector < pair < int ,int >  > res[10000];
+ 
+ 
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int n , m;
+    cin >> n >> m ;
+    for (int i = 0 ; i < m ;i++){
+            int u  , v ;
+    cin >> u >> v ;
+    adj[min(u,v)].push_back(max(v,u));
+    //adj[v].push_back(u);
+    }
+    int col = 0 ;
+    for (int i = 1 ; i <= n ;i++){
+        res[i].push_back({i,++col});
+        for (int j : adj[i]){
+            res[i].push_back({i,++col});
+            res[j].push_back({j,col});
+        }
+        cout << res[i].size() << endl;
+        for (auto j  : res[i]){
+            cout << j.first << " " << j.second << endl;
+        }
+    }
+ 
+}
+ 
+ 

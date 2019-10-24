@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+ 
+using namespace std;
+vector < int > adj[100005];
+int res[100005];
+int st = 0 ;
+int vis[1005];
+void dfs (int u){
+    if (res[u]==2) {cout << u << " " ; return ;}
+for (int i : adj[u])
+    res[i]++,dfs(i);
+ 
+}
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int n ;
+    cin >> n ;
+    for (int i = 1 ; i <= n ;i++){
+        int tk ;
+        cin >> tk ;
+        adj[i].push_back(tk);
+    }
+    for (int i = 1 ; i <= n ;i++){
+    memset(res,0,sizeof res ),res[i]++,
+     dfs(i);
+    }
+ 
+ 
+}

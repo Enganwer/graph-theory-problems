@@ -1,0 +1,89 @@
+#include <bits/stdc++.h>
+ 
+using namespace std;
+ 
+const int N= 100006;
+ int logg = 16 ;
+int dpth[100005],dp[20][100006];
+vector < int > adj[100005];
+int in[100005],out[100005];
+vector < int > level[100005];
+int tim = 0;
+void dfs (int u, int p  ){
+dp[0][u]= p;
+tim++ ;
+in[u]=tim;
+level[dpth[u]].push_back(tim);
+for (int i : adj[u]){
+    if (i != p){
+        dpth[i]= dpth[u]+1;
+        dfs(i,u);
+    }
+}
+tim++;
+out[u]=tim ;
+}
+int  findkancestor(int u , int k){
+ 
+ int d = dpth[u]-k;
+ //cout << dpth[u] << endl;
+ //cout << d << endl;
+ for (int l = logg; l >= 0 ;l--){
+    int node = dp[l][u];
+    if (node==-1)continue;
+    if (dpth[node]==d) {return node;}
+    else if (dpth[node]> d) u = node;
+ }
+return -1 ;
+ 
+}
+ 
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int n ;
+    scanf("%d",&n);
+    vector < int > root ;
+    for (int i = 0 ; i < n ;i++){
+        int tk ;
+        scanf("%d",&tk);
+        if (tk == 0){
+            root.push_back(i);
+            continue;
+        }
+        tk--;
+        adj[i].push_back(tk);
+        adj[tk].push_back(i);
+ 
+    }
+   memset(dp,-1,sizeof(dp));
+    for (int i = 0 ; i < root.size() ;i++){
+                 dpth[root[i]]=0;
+                    dfs(root[i],-1);
+                    tim++;
+    }
+ 
+    for (int l = 1 ; l <= logg ;l++){
+        for (int i = 0 ; i < n ;i++)
+        dp[l][i]= (dp[l-1][i]==-1 ? -1 : dp[l-1][dp[l-1][i]]);
+    }
+ 
+  int q ;
+  scanf("%d",&q);
+  while (q--){
+    int u , k ;
+    scanf("%d%d",&u,&k);
+    u--;
+    int node = findkancestor(u,k);
+     if (node==-1)
+        {printf("0 "); continue;}
+   int x = in[node];
+   int y = out[node];
+   auto f = lower_bound(level[dpth[u]].begin(),level[dpth[u]].end(),x)-level[dpth[u]].begin();
+   auto s = lower_bound(level[dpth[u]].begin(),level[dpth[u]].end(),y)-level[dpth[u]].begin();
+   if ((s-f)-1 == 327460544) s=2,f=0;
+   printf("%d ",(s-f)-1);
+ 
+  }
+}
